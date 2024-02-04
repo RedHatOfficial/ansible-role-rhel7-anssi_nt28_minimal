@@ -12,7 +12,6 @@ var_password_pam_ucredit: '-1'
 var_accounts_maximum_age_login_defs: '90'
 var_accounts_password_minlen_login_defs: '18'
 var_password_pam_unix_rounds: '65536'
-DISA_STIG_RHEL_07_010019: true
 DISA_STIG_RHEL_07_010120: true
 DISA_STIG_RHEL_07_010130: true
 DISA_STIG_RHEL_07_010140: true

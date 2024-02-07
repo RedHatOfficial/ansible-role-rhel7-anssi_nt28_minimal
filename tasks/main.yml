@@ -1,5 +1,5 @@
 - name: Find /etc/sudoers.d/ files
-  find:
+  ansible.builtin.find:
     paths:
     - /etc/sudoers.d/
   register: sudoers
@@ -24,7 +24,7 @@
   - sudo_remove_no_authenticate | bool
 
 - name: Remove lines containing !authenticate from sudoers files
-  replace:
+  ansible.builtin.replace:
     regexp: (^(?!#).*[\s]+\!authenticate.*$)
     replace: '# \g<1>'
     path: '{{ item.path }}'
@@ -53,7 +53,7 @@
   - sudo_remove_no_authenticate | bool
 
 - name: Find /etc/sudoers.d/ files
-  find:
+  ansible.builtin.find:
     paths:
     - /etc/sudoers.d/
   register: sudoers
@@ -78,7 +78,7 @@
   - sudo_remove_nopasswd | bool
 
 - name: Remove lines containing NOPASSWD from sudoers files
-  replace:
+  ansible.builtin.replace:
     regexp: (^(?!#).*[\s]+NOPASSWD[\s]*\:.*$)
     replace: '# \g<1>'
     path: '{{ item.path }}'
@@ -344,6 +344,7 @@
   - NIST-800-53-SC-12(3)
   - NIST-800-53-SI-7
   - PCI-DSS-Req-6.2
+  - PCI-DSSv4-6.3.3
   - ensure_redhat_gpgkey_installed
   - high_severity
   - medium_complexity
@@ -375,6 +376,7 @@
   - NIST-800-53-SC-12(3)
   - NIST-800-53-SI-7
   - PCI-DSS-Req-6.2
+  - PCI-DSSv4-6.3.3
   - ensure_redhat_gpgkey_installed
   - high_severity
   - medium_complexity
@@ -406,6 +408,7 @@
   - NIST-800-53-SC-12(3)
   - NIST-800-53-SI-7
   - PCI-DSS-Req-6.2
+  - PCI-DSSv4-6.3.3
   - ensure_redhat_gpgkey_installed
   - high_severity
   - medium_complexity
@@ -435,6 +438,7 @@
   - NIST-800-53-SC-12(3)
   - NIST-800-53-SI-7
   - PCI-DSS-Req-6.2
+  - PCI-DSSv4-6.3.3
   - ensure_redhat_gpgkey_installed
   - high_severity
   - medium_complexity
@@ -477,6 +481,7 @@
   - NIST-800-53-SC-12(3)
   - NIST-800-53-SI-7
   - PCI-DSS-Req-6.2
+  - PCI-DSSv4-6.3.3
   - ensure_redhat_gpgkey_installed
   - high_severity
   - medium_complexity
@@ -3735,7 +3740,6 @@
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
   - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_dcredit
   - low_complexity
   - low_disruption
@@ -3775,7 +3779,6 @@
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
   - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_dcredit
   - low_complexity
   - low_disruption
@@ -3795,7 +3798,6 @@
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
   - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_lcredit
   - low_complexity
   - low_disruption
@@ -3835,7 +3837,6 @@
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
   - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_lcredit
   - low_complexity
   - low_disruption
@@ -3856,7 +3857,6 @@
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
   - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_minlen
   - low_complexity
   - low_disruption
@@ -3897,7 +3897,6 @@
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
   - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_minlen
   - low_complexity
   - low_disruption
@@ -3970,8 +3969,6 @@
   - NIST-800-53-IA-5(4)
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
-  - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_ucredit
   - low_complexity
   - low_disruption
@@ -4010,8 +4007,6 @@
   - NIST-800-53-IA-5(4)
   - NIST-800-53-IA-5(c)
   - PCI-DSS-Req-8.2.3
-  - PCI-DSSv4-8.3.6
-  - PCI-DSSv4-8.3.9
   - accounts_password_pam_ucredit
   - low_complexity
   - low_disruption
@@ -4297,7 +4292,7 @@
   - NIST-800-53-IA-5(1)(d)
   - NIST-800-53-IA-5(f)
   - PCI-DSS-Req-8.2.4
-  - PCI-DSSv4-8.3.10.1
+  - PCI-DSSv4-8.3.9
   - accounts_maximum_age_login_defs
   - low_complexity
   - low_disruption
@@ -4337,7 +4332,7 @@
   - NIST-800-53-IA-5(1)(d)
   - NIST-800-53-IA-5(f)
   - PCI-DSS-Req-8.2.4
-  - PCI-DSSv4-8.3.10.1
+  - PCI-DSSv4-8.3.9
   - accounts_maximum_age_login_defs
   - low_complexity
   - low_disruption
@@ -5166,6 +5161,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5193,6 +5189,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5216,6 +5213,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5248,6 +5246,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5272,6 +5271,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5286,6 +5286,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5310,6 +5311,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5333,6 +5335,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5357,6 +5360,7 @@
   - CCE-80130-8
   - NIST-800-53-AC-6(1)
   - NIST-800-53-CM-6(a)
+  - PCI-DSSv4-2.2.6
   - dir_perms_world_writable_sticky_bits
   - low_complexity
   - low_disruption
@@ -5504,6 +5508,7 @@
   - NIST-800-53-CM-7(a)
   - NIST-800-53-CM-7(b)
   - NIST-800-53-IA-5(1)(c)
+  - PCI-DSSv4-2.2.4
   - disable_strategy
   - high_severity
   - low_complexity
@@ -5547,6 +5552,7 @@
     state: absent
   tags:
   - CCE-27210-4
+  - PCI-DSSv4-2.2.4
   - disable_strategy
   - low_complexity
   - low_disruption
@@ -5641,6 +5647,7 @@
   - NIST-800-53-CM-6(a)
   - NIST-800-53-CM-7(a)
   - NIST-800-53-CM-7(b)
+  - PCI-DSSv4-2.2.4
   - disable_strategy
   - high_severity
   - low_complexity
@@ -5662,6 +5669,7 @@
     state: absent
   tags:
   - CCE-80443-5
+  - PCI-DSSv4-2.2.4
   - disable_strategy
   - low_complexity
   - low_disruption

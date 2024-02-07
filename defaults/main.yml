@@ -10,7 +10,6 @@ var_password_pam_minlen: '18'
 var_password_pam_ocredit: '-1'
 var_password_pam_ucredit: '-1'
 var_accounts_maximum_age_login_defs: '90'
-var_accounts_password_minlen_login_defs: '18'
 var_password_pam_unix_rounds: '65536'
 DISA_STIG_RHEL_07_010120: true
 DISA_STIG_RHEL_07_010130: true
@@ -31,7 +30,6 @@ DISA_STIG_RHEL_07_020260: true
 DISA_STIG_RHEL_07_021710: true
 DISA_STIG_RHEL_07_040700: true
 accounts_maximum_age_login_defs: true
-accounts_password_minlen_login_defs: true
 accounts_password_pam_dcredit: true
 accounts_password_pam_lcredit: true
 accounts_password_pam_minlen: true
@@ -45,8 +43,6 @@ accounts_passwords_pam_faillock_deny_root: true
 accounts_passwords_pam_faillock_interval: true
 accounts_passwords_pam_faillock_unlock_time: true
 configure_strategy: true
-dir_perms_world_writable_root_owned: true
-dir_perms_world_writable_sticky_bits: true
 disable_strategy: true
 enable_strategy: true
 ensure_gpgcheck_globally_activated: true
@@ -65,6 +61,7 @@ no_reboot_needed: true
 package_dhcp_removed: true
 package_rsh_removed: true
 package_rsh_server_removed: true
+package_rsyslog_installed: true
 package_sendmail_removed: true
 package_talk_removed: true
 package_talk_server_removed: true
@@ -79,6 +76,7 @@ patch_strategy: true
 reboot_required: true
 restrict_strategy: true
 security_patches_up_to_date: true
+service_rsyslog_enabled: true
 set_password_hashing_algorithm_systemauth: true
 skip_ansible_lint: true
 sudo_remove_no_authenticate: true

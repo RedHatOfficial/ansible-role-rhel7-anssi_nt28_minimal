@@ -1,111 +1,3 @@
-- name: Find /etc/sudoers.d/ files
-  ansible.builtin.find:
-    paths:
-    - /etc/sudoers.d/
-  register: sudoers
-  tags:
-  - CCE-80350-2
-  - DISA-STIG-RHEL-07-010350
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-11
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sudo_remove_no_authenticate
-  when:
-  - DISA_STIG_RHEL_07_010350 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sudo_remove_no_authenticate | bool
-
-- name: Remove lines containing !authenticate from sudoers files
-  ansible.builtin.replace:
-    regexp: (^(?!#).*[\s]+\!authenticate.*$)
-    replace: '# \g<1>'
-    path: '{{ item.path }}'
-    validate: /usr/sbin/visudo -cf %s
-  with_items:
-  - path: /etc/sudoers
-  - '{{ sudoers.files }}'
-  tags:
-  - CCE-80350-2
-  - DISA-STIG-RHEL-07-010350
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-11
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sudo_remove_no_authenticate
-  when:
-  - DISA_STIG_RHEL_07_010350 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sudo_remove_no_authenticate | bool
-
-- name: Find /etc/sudoers.d/ files
-  ansible.builtin.find:
-    paths:
-    - /etc/sudoers.d/
-  register: sudoers
-  tags:
-  - CCE-80351-0
-  - DISA-STIG-RHEL-07-010340
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-11
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sudo_remove_nopasswd
-  when:
-  - DISA_STIG_RHEL_07_010340 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sudo_remove_nopasswd | bool
-
-- name: Remove lines containing NOPASSWD from sudoers files
-  ansible.builtin.replace:
-    regexp: (^(?!#).*[\s]+NOPASSWD[\s]*\:.*$)
-    replace: '# \g<1>'
-    path: '{{ item.path }}'
-    validate: /usr/sbin/visudo -cf %s
-  with_items:
-  - path: /etc/sudoers
-  - '{{ sudoers.files }}'
-  tags:
-  - CCE-80351-0
-  - DISA-STIG-RHEL-07-010340
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-11
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  - sudo_remove_nopasswd
-  when:
-  - DISA_STIG_RHEL_07_010340 | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - sudo_remove_nopasswd | bool
-
 - name: Gather the package facts
   package_facts:
     manager: auto
@@ -299,7 +191,7 @@
     value: '1'
     no_extra_spaces: true
   loop: '{{ repo_grep_results.stdout |regex_findall( ''(.+\.repo):\[(.+)\]\n?'' ) if repo_grep_results is not skipped else
-    []}}'
+    [] }}'
   when:
   - enable_strategy | bool
   - ensure_gpgcheck_never_disabled | bool
@@ -492,36 +384,6 @@
   - medium_disruption
   - no_reboot_needed
   - restrict_strategy
-
-- name: Security patches are up to date
-  package:
-    name: '*'
-    state: latest
-  tags:
-  - CCE-26895-3
-  - CJIS-5.10.4.1
-  - DISA-STIG-RHEL-07-020260
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-SI-2(5)
-  - NIST-800-53-SI-2(c)
-  - PCI-DSS-Req-6.2
-  - PCI-DSSv4-6.3.3
-  - high_disruption
-  - low_complexity
-  - medium_severity
-  - patch_strategy
-  - reboot_required
-  - security_patches_up_to_date
-  - skip_ansible_lint
-  when:
-  - DISA_STIG_RHEL_07_020260 | bool
-  - high_disruption | bool
-  - low_complexity | bool
-  - medium_severity | bool
-  - patch_strategy | bool
-  - reboot_required | bool
-  - security_patches_up_to_date | bool
-  - skip_ansible_lint | bool
 
 - name: Gather the package facts
   package_facts:
@@ -3852,6 +3714,60 @@
   package_facts:
     manager: auto
   tags:
+  - CCE-82045-6
+  - DISA-STIG-RHEL-07-010170
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(1)(a)
+  - NIST-800-53-IA-5(4)
+  - NIST-800-53-IA-5(c)
+  - accounts_password_pam_minclass
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  when:
+  - DISA_STIG_RHEL_07_010170 | bool
+  - accounts_password_pam_minclass | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+
+- name: Ensure PAM Enforces Password Requirements - Minimum Different Categories - Ensure PAM variable minclass is set accordingly
+  ansible.builtin.lineinfile:
+    create: true
+    dest: /etc/security/pwquality.conf
+    regexp: ^#?\s*minclass
+    line: minclass = {{ var_password_pam_minclass }}
+  when:
+  - DISA_STIG_RHEL_07_010170 | bool
+  - accounts_password_pam_minclass | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
+  - '"pam" in ansible_facts.packages'
+  tags:
+  - CCE-82045-6
+  - DISA-STIG-RHEL-07-010170
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(1)(a)
+  - NIST-800-53-IA-5(4)
+  - NIST-800-53-IA-5(c)
+  - accounts_password_pam_minclass
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  tags:
   - CCE-27293-0
   - CJIS-5.6.2.1.1
   - DISA-STIG-RHEL-07-010280
@@ -3961,6 +3877,223 @@
   - medium_severity
   - no_reboot_needed
   - restrict_strategy
+
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  tags:
+  - CCE-27160-1
+  - CJIS-5.5.3
+  - DISA-STIG-RHEL-07-010119
+  - NIST-800-53-AC-7(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(4)
+  - accounts_password_pam_retry
+  - configure_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+  when:
+  - DISA_STIG_RHEL_07_010119 | bool
+  - accounts_password_pam_retry | bool
+  - configure_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+
+- name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Check if expected
+    PAM module line is present in /etc/pam.d/system-auth
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    regexp: ^\s*password\s+{{ 'requisite' | regex_escape() }}\s+pam_pwquality.so\s*.*
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_line_present
+  when:
+  - DISA_STIG_RHEL_07_010119 | bool
+  - accounts_password_pam_retry | bool
+  - configure_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"pam" in ansible_facts.packages'
+  tags:
+  - CCE-27160-1
+  - CJIS-5.5.3
+  - DISA-STIG-RHEL-07-010119
+  - NIST-800-53-AC-7(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(4)
+  - accounts_password_pam_retry
+  - configure_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Include or update
+    the PAM module line in /etc/pam.d/system-auth
+  block:
+  - name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Check if required
+      PAM module line is present in /etc/pam.d/system-auth with different control
+    ansible.builtin.lineinfile:
+      path: /etc/pam.d/system-auth
+      regexp: ^\s*password\s+.*\s+pam_pwquality.so\s*
+      state: absent
+    check_mode: true
+    changed_when: false
+    register: result_pam_line_other_control_present
+  - name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Ensure the correct
+      control for the required PAM module line in /etc/pam.d/system-auth
+    ansible.builtin.replace:
+      dest: /etc/pam.d/system-auth
+      regexp: ^(\s*password\s+).*(\bpam_pwquality.so.*)
+      replace: \1requisite \2
+    register: result_pam_module_edit
+    when:
+    - result_pam_line_other_control_present.found == 1
+  - name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Ensure the required
+      PAM module line is included in /etc/pam.d/system-auth
+    ansible.builtin.lineinfile:
+      dest: /etc/pam.d/system-auth
+      insertafter: ^\s*account
+      line: password    requisite    pam_pwquality.so
+    register: result_pam_module_add
+    when:
+    - result_pam_line_other_control_present.found == 0 or result_pam_line_other_control_present.found > 1
+  - name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Ensure authselect
+      changes are applied
+    ansible.builtin.command:
+      cmd: authselect apply-changes -b
+    when:
+    - result_authselect_present is defined
+    - result_authselect_present.stat.exists
+    - "(result_pam_module_add is defined and result_pam_module_add.changed)\n or (result_pam_module_edit is defined and result_pam_module_edit.changed)"
+  when:
+  - DISA_STIG_RHEL_07_010119 | bool
+  - accounts_password_pam_retry | bool
+  - configure_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"pam" in ansible_facts.packages'
+  - result_pam_line_present.found is defined
+  - result_pam_line_present.found == 0
+  tags:
+  - CCE-27160-1
+  - CJIS-5.5.3
+  - DISA-STIG-RHEL-07-010119
+  - NIST-800-53-AC-7(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(4)
+  - accounts_password_pam_retry
+  - configure_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Check if the required
+    PAM module option is present in /etc/pam.d/system-auth
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    regexp: ^\s*password\s+{{ 'requisite' | regex_escape() }}\s+pam_pwquality.so\s*.*\sretry\b
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: result_pam_module_retry_option_present
+  when:
+  - DISA_STIG_RHEL_07_010119 | bool
+  - accounts_password_pam_retry | bool
+  - configure_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"pam" in ansible_facts.packages'
+  tags:
+  - CCE-27160-1
+  - CJIS-5.5.3
+  - DISA-STIG-RHEL-07-010119
+  - NIST-800-53-AC-7(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(4)
+  - accounts_password_pam_retry
+  - configure_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Ensure the "retry"
+    PAM option for "pam_pwquality.so" is included in /etc/pam.d/system-auth
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    backrefs: true
+    regexp: ^(\s*password\s+{{ 'requisite' | regex_escape() }}\s+pam_pwquality.so.*)
+    line: \1 retry={{ var_password_pam_retry }}
+    state: present
+  register: result_pam_retry_add
+  when:
+  - DISA_STIG_RHEL_07_010119 | bool
+  - accounts_password_pam_retry | bool
+  - configure_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"pam" in ansible_facts.packages'
+  - result_pam_module_retry_option_present.found == 0
+  tags:
+  - CCE-27160-1
+  - CJIS-5.5.3
+  - DISA-STIG-RHEL-07-010119
+  - NIST-800-53-AC-7(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(4)
+  - accounts_password_pam_retry
+  - configure_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
+
+- name: Ensure PAM Enforces Password Requirements - Authentication Retry Prompts Permitted Per-Session - Ensure the required
+    value for "retry" PAM option from "pam_pwquality.so" in /etc/pam.d/system-auth
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/system-auth
+    backrefs: true
+    regexp: ^(\s*password\s+{{ 'requisite' | regex_escape() }}\s+pam_pwquality.so\s+.*)(retry)=[0-9a-zA-Z]+\s*(.*)
+    line: \1\2={{ var_password_pam_retry }} \3
+  register: result_pam_retry_edit
+  when:
+  - DISA_STIG_RHEL_07_010119 | bool
+  - accounts_password_pam_retry | bool
+  - configure_strategy | bool
+  - low_complexity | bool
+  - medium_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - '"pam" in ansible_facts.packages'
+  - result_pam_module_retry_option_present.found > 0
+  tags:
+  - CCE-27160-1
+  - CJIS-5.5.3
+  - DISA-STIG-RHEL-07-010119
+  - NIST-800-53-AC-7(a)
+  - NIST-800-53-CM-6(a)
+  - NIST-800-53-IA-5(4)
+  - accounts_password_pam_retry
+  - configure_strategy
+  - low_complexity
+  - medium_disruption
+  - medium_severity
+  - no_reboot_needed
 
 - name: Gather the package facts
   package_facts:
@@ -4288,66 +4421,6 @@
   package_facts:
     manager: auto
   tags:
-  - CCE-27051-2
-  - CJIS-5.6.2.1
-  - DISA-STIG-RHEL-07-010250
-  - NIST-800-171-3.5.6
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-5(1)(d)
-  - NIST-800-53-IA-5(f)
-  - PCI-DSS-Req-8.2.4
-  - PCI-DSSv4-8.3.9
-  - accounts_maximum_age_login_defs
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-  when:
-  - DISA_STIG_RHEL_07_010250 | bool
-  - accounts_maximum_age_login_defs | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-
-- name: Set Password Maximum Age
-  lineinfile:
-    create: true
-    dest: /etc/login.defs
-    regexp: ^#?PASS_MAX_DAYS
-    line: PASS_MAX_DAYS {{ var_accounts_maximum_age_login_defs }}
-  when:
-  - DISA_STIG_RHEL_07_010250 | bool
-  - accounts_maximum_age_login_defs | bool
-  - low_complexity | bool
-  - low_disruption | bool
-  - medium_severity | bool
-  - no_reboot_needed | bool
-  - restrict_strategy | bool
-  - '"shadow-utils" in ansible_facts.packages'
-  tags:
-  - CCE-27051-2
-  - CJIS-5.6.2.1
-  - DISA-STIG-RHEL-07-010250
-  - NIST-800-171-3.5.6
-  - NIST-800-53-CM-6(a)
-  - NIST-800-53-IA-5(1)(d)
-  - NIST-800-53-IA-5(f)
-  - PCI-DSS-Req-8.2.4
-  - PCI-DSSv4-8.3.9
-  - accounts_maximum_age_login_defs
-  - low_complexity
-  - low_disruption
-  - medium_severity
-  - no_reboot_needed
-  - restrict_strategy
-
-- name: Gather the package facts
-  package_facts:
-    manager: auto
-  tags:
   - CCE-82049-8
   - CJIS-5.6.2.1
   - NIST-800-171-3.5.7
@@ -4396,6 +4469,25 @@
   - medium_severity
   - no_reboot_needed
   - restrict_strategy
+
+- name: Change the maximum time period between password changes
+  ansible.builtin.command:
+    cmd: chage -M {{ var_accounts_maximum_age_root }} root
+  tags:
+  - CCE-87665-6
+  - accounts_password_set_max_life_root
+  - low_complexity
+  - low_disruption
+  - medium_severity
+  - no_reboot_needed
+  - restrict_strategy
+  when:
+  - accounts_password_set_max_life_root | bool
+  - low_complexity | bool
+  - low_disruption | bool
+  - medium_severity | bool
+  - no_reboot_needed | bool
+  - restrict_strategy | bool
 
 - name: Gather the package facts
   package_facts:
